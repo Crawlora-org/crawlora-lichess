@@ -17,21 +17,53 @@ pub struct ModelAppResponse {
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ModelLichessEnumsResponse {
-    #[serde(rename = "cloud_evaluation_default_variant", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "cloud_evaluation_default_variant",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub cloud_evaluation_default_variant: Option<String>,
-    #[serde(rename = "cloud_evaluation_variants", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "cloud_evaluation_variants",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub cloud_evaluation_variants: Option<Vec<String>>,
-    #[serde(rename = "puzzle_angle", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "puzzle_angle",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub puzzle_angle: Option<String>,
-    #[serde(rename = "puzzle_batch_sizes", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "puzzle_batch_sizes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub puzzle_batch_sizes: Option<serde_json::Value>,
-    #[serde(rename = "puzzle_colors", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "puzzle_colors",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub puzzle_colors: Option<Vec<String>>,
-    #[serde(rename = "puzzle_difficulties", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "puzzle_difficulties",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub puzzle_difficulties: Option<Vec<String>>,
-    #[serde(rename = "standard_dtc", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "standard_dtc",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub standard_dtc: Option<Vec<String>>,
-    #[serde(rename = "tablebase_variants", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "tablebase_variants",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub tablebase_variants: Option<Vec<String>>,
     #[serde(flatten)]
     pub additional: BTreeMap<String, Value>,
@@ -41,7 +73,11 @@ pub struct ModelLichessEnumsResponse {
 pub struct ModelLichessResponse {
     #[serde(rename = "data", default, skip_serializing_if = "Option::is_none")]
     pub data: Option<serde_json::Value>,
-    #[serde(rename = "source_url", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "source_url",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub source_url: Option<String>,
     #[serde(flatten)]
     pub additional: BTreeMap<String, Value>,
@@ -61,7 +97,11 @@ pub struct ModelLichessServerVersion {
 pub struct ModelLichessServerVersionResponse {
     #[serde(rename = "server", default, skip_serializing_if = "Option::is_none")]
     pub server: Option<ModelLichessServerVersion>,
-    #[serde(rename = "source_url", default, skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "source_url",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
     pub source_url: Option<String>,
     #[serde(flatten)]
     pub additional: BTreeMap<String, Value>,

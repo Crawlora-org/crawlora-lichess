@@ -13,7 +13,9 @@ pub struct Services {
 impl Services {
     pub(crate) fn new(inner: Arc<ClientInner>) -> Self {
         Self {
-            lichess: LichessApi { inner: Arc::clone(&inner) },
+            lichess: LichessApi {
+                inner: Arc::clone(&inner),
+            },
         }
     }
 }
@@ -109,56 +111,77 @@ pub struct LichessApi {
 
 impl LichessApi {
     pub async fn cloud_eval(&self, params: LichessCloudEvalParams) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-cloud-eval", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-cloud-eval", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn enums(&self, params: LichessEnumsParams) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-enums", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-enums", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn puzzle(&self, params: LichessPuzzleParams) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-puzzle", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-puzzle", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn puzzle_batch(
         &self,
         params: LichessPuzzleBatchParams,
     ) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-puzzle-batch", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-puzzle-batch", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn puzzle_daily(
         &self,
         params: LichessPuzzleDailyParams,
     ) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-puzzle-daily", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-puzzle-daily", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn puzzle_many(&self, params: LichessPuzzleManyParams) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-puzzle-many", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-puzzle-many", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn puzzle_next(&self, params: LichessPuzzleNextParams) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-puzzle-next", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-puzzle-next", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn puzzle_themes(
         &self,
         params: LichessPuzzleThemesParams,
     ) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-puzzle-themes", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-puzzle-themes", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn simuls(&self, params: LichessSimulsParams) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-simuls", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-simuls", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn tablebase(&self, params: LichessTablebaseParams) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-tablebase", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-tablebase", &params, RequestOptions::default())
+            .await
     }
 
     pub async fn version(&self, params: LichessVersionParams) -> Result<ApiResponse, Error> {
-        self.inner.call("lichess-version", &params, RequestOptions::default()).await
+        self.inner
+            .call("lichess-version", &params, RequestOptions::default())
+            .await
     }
-
 }
