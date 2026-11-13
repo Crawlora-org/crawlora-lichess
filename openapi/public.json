@@ -1,0 +1,896 @@
+{
+  "basePath": "/api/v1",
+  "definitions": {
+    "app.Response": {
+      "description": "The Response struct is used for wrapping the API response with a code, message, and data.",
+      "properties": {
+        "code": {
+          "description": "Code is the HTTP status code or a custom code used to indicate the result of the request\n@example 200",
+          "type": "integer"
+        },
+        "data": {
+          "description": "Data is the response data (can be any object or null)\n@example {\"id\": 1, \"name\": \"John Doe\"}"
+        },
+        "msg": {
+          "description": "Msg is the message that describes the result of the request\n@example \"Request successful\""
+        }
+      },
+      "type": "object"
+    },
+    "lichess.EnumsResponse": {
+      "properties": {
+        "cloud_evaluation_default_variant": {
+          "type": "string"
+        },
+        "cloud_evaluation_variants": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "puzzle_angle": {
+          "type": "string"
+        },
+        "puzzle_batch_sizes": {
+          "properties": {
+            "default": {
+              "type": "integer"
+            },
+            "maximum": {
+              "type": "integer"
+            },
+            "minimum": {
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "puzzle_colors": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "puzzle_difficulties": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "standard_dtc": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tablebase_variants": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "lichess.Response": {
+      "properties": {
+        "data": {},
+        "source_url": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "lichess.ServerVersion": {
+      "properties": {
+        "commit": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "lichess.ServerVersionResponse": {
+      "properties": {
+        "server": {
+          "$ref": "#/definitions/lichess.ServerVersion"
+        },
+        "source_url": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "host": "api.crawlora.net",
+  "info": {
+    "contact": {
+      "email": "support@crawlora.net",
+      "name": "API Support",
+      "url": "https://crawlora.net"
+    },
+    "description": "Crawlora is a hosted web-data and SERP API: call documented REST endpoints and get normalized JSON instead of HTML to parse — across search/SERP, maps and local, e-commerce, app stores, social, media and finance. One API key; Crawlora runs the proxy rotation, headless browsers and parsing behind the scenes. Billed pay-on-success: charged only on a successful 2xx response, 1-10 credits per call, with a free tier of 2,000 credits per month and no card. A hosted MCP server (mcp.crawlora.net/mcp) exposes the same catalog as agent tools. Search endpoints accept `q` as a universal alias for whichever search-term parameter they document (`query`, `term`, `keyword`, or Amazon's `k`), so one parameter name works across the whole catalog; an explicitly supplied documented name always wins.",
+    "license": {
+      "name": "Crawlora Terms of Service",
+      "url": "https://crawlora.net/terms"
+    },
+    "termsOfService": "https://crawlora.net/terms",
+    "title": "Crawlora API",
+    "version": "1.2",
+    "x-logo": {
+      "altText": "Crawlora",
+      "backgroundColor": "#FFFFFF",
+      "url": "https://raw.githubusercontent.com/Crawlora-org/crawlora-mcp/main/assets/logo-400x400.png"
+    }
+  },
+  "paths": {
+    "/lichess/cloud-eval": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the source's cached evaluation for one position. The API is public and position-based; it does not return player or game-account records. The source recommends requesting individual positions rather than using this route for bulk downloads.",
+        "operationId": "lichess-cloud-eval",
+        "parameters": [
+          {
+            "description": "X-FEN chess position",
+            "in": "query",
+            "name": "fen",
+            "required": true,
+            "type": "string",
+            "x-example": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+          },
+          {
+            "description": "Number of principal variations requested; source default is 1",
+            "in": "query",
+            "name": "multiPv",
+            "type": "integer"
+          },
+          {
+            "description": "Source chess variant; defaults to standard",
+            "enum": [
+              "standard",
+              "chess960",
+              "crazyhouse",
+              "antichess",
+              "atomic",
+              "horde",
+              "kingOfTheHill",
+              "racingKings",
+              "threeCheck",
+              "fromPosition"
+            ],
+            "in": "query",
+            "name": "variant",
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/app.Response"
+                },
+                {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/definitions/lichess.Response"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a cached Lichess cloud evaluation",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/enums": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the complete closed difficulty, side-to-move, tablebase and cloud-evaluation variant, standard DTC, and batch-size values from the current public API specification. Puzzle angle/theme is an open source string; Lichess does not expose a finite theme catalog in the REST API.",
+        "operationId": "lichess-enums",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/app.Response"
+                },
+                {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/definitions/lichess.EnumsResponse"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List Lichess public read enums",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/puzzle": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns one public puzzle by its source ID with puzzle themes and solution. Associated player names and game IDs are omitted.",
+        "operationId": "lichess-puzzle",
+        "parameters": [
+          {
+            "description": "Lichess puzzle ID",
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/app.Response"
+                },
+                {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/definitions/lichess.Response"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a public Lichess puzzle",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/puzzle/batch": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns puzzles selected by an open-ended source theme/angle. Difficulty is easiest, easier, normal, harder, or hardest; color is white or black; nb is 1 through 50, default 15. The response may be an array. Player names, account identifiers, and PGN identity headers are omitted.",
+        "operationId": "lichess-puzzle-batch",
+        "parameters": [
+          {
+            "description": "Open-ended upstream puzzle theme",
+            "in": "query",
+            "name": "angle",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Optional source difficulty",
+            "enum": [
+              "easiest",
+              "easier",
+              "normal",
+              "harder",
+              "hardest"
+            ],
+            "in": "query",
+            "name": "difficulty",
+            "type": "string"
+          },
+          {
+            "description": "Number of puzzles, 1 through 50 (default 15)",
+            "in": "query",
+            "name": "nb",
+            "type": "integer"
+          },
+          {
+            "description": "Optional side to move",
+            "enum": [
+              "white",
+              "black"
+            ],
+            "in": "query",
+            "name": "color",
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a Lichess puzzle batch by theme",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/puzzle/daily": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the public daily tactic. Player names, account identifiers, and PGN identity headers are omitted. The service sends a project/contact User-Agent, serializes requests across replicas, and observes Lichess's one-request-at-a-time and 60-second 429 cooldown guidance.",
+        "operationId": "lichess-puzzle-daily",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/app.Response"
+                },
+                {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/definitions/lichess.Response"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Lichess daily puzzle",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/puzzle/many": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns up to 50 public puzzles identified by a comma-separated source ID list. Player records, game cross-references, and PGN identity headers are omitted. Requests are serialized and the source's 429 cooldown is observed.",
+        "operationId": "lichess-puzzle-many",
+        "parameters": [
+          {
+            "description": "Comma-separated list of 1 to 50 five-character Lichess puzzle IDs",
+            "in": "query",
+            "name": "ids",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get multiple Lichess puzzles by ID",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/puzzle/next": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the next public puzzle and optional upstream theme, side-to-move, and difficulty filters. Difficulty is easiest, easier, normal, harder, or hardest; color is white or black. The angle/theme value is open text in the upstream API, not a closed enum. Player identity fields are omitted.",
+        "operationId": "lichess-puzzle-next",
+        "parameters": [
+          {
+            "description": "Optional upstream puzzle theme/angle; values are open-ended",
+            "in": "query",
+            "name": "angle",
+            "type": "string"
+          },
+          {
+            "description": "Optional source difficulty",
+            "enum": [
+              "easiest",
+              "easier",
+              "normal",
+              "harder",
+              "hardest"
+            ],
+            "in": "query",
+            "name": "difficulty",
+            "type": "string"
+          },
+          {
+            "description": "Optional side to move",
+            "enum": [
+              "white",
+              "black"
+            ],
+            "in": "query",
+            "name": "color",
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/app.Response"
+                },
+                {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/definitions/lichess.Response"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a Lichess puzzle by source filters",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/puzzle/themes": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the current puzzle-theme keys from Lichess's official source translation catalog. The list is for discovery; puzzle angle remains open text in the public API. The catalog is read anonymously from Lichess's official source repository and cached for one hour.",
+        "operationId": "lichess-puzzle-themes",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/app.Response"
+                },
+                {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/definitions/lichess.Response"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Discover Lichess puzzle themes",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/simuls": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns public created, started, and finished Simuls with source variants, lifecycle fields, applicant/pairing counts, host ID/name/rating/online state, and user-authored name/text fields. Only pending listings are OAuth-specific and are omitted. Requests use the shared serial gate and honor Lichess's 60-second minimum cooldown after 429.",
+        "operationId": "lichess-simuls",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/app.Response"
+                },
+                {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/definitions/lichess.Response"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List public Lichess simultaneous exhibitions",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/tablebase": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns tablebase information and legal moves for one FEN using the selected public ruleset. Supported variants are standard, atomic, and antichess. No game or player account is involved.",
+        "operationId": "lichess-tablebase",
+        "parameters": [
+          {
+            "description": "Tablebase ruleset",
+            "enum": [
+              "standard",
+              "atomic",
+              "antichess"
+            ],
+            "in": "query",
+            "name": "variant",
+            "required": true,
+            "type": "string",
+            "x-example": "standard"
+          },
+          {
+            "description": "Position in Forsyth-Edwards Notation",
+            "in": "query",
+            "name": "fen",
+            "required": true,
+            "type": "string",
+            "x-example": "8/8/8/8/8/8/1K6/6k1 w - - 0 1"
+          },
+          {
+            "description": "Standard tablebase distance-to-conversion mode",
+            "enum": [
+              "never",
+              "auxiliary",
+              "always"
+            ],
+            "in": "query",
+            "name": "dtc",
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/app.Response"
+                },
+                {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/definitions/lichess.Response"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Query the Lichess tablebase",
+        "tags": [
+          "lichess"
+        ]
+      }
+    },
+    "/lichess/version": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "description": "Returns the deployed Lichess server build date and source commit. This public service metadata contains no player or game records.",
+        "operationId": "lichess-version",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/app.Response"
+                },
+                {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/definitions/lichess.ServerVersionResponse"
+                    }
+                  },
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "schema": {
+              "$ref": "#/definitions/app.Response"
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get the Lichess server version",
+        "tags": [
+          "lichess"
+        ]
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "in": "header",
+      "name": "x-api-key",
+      "type": "apiKey"
+    }
+  },
+  "swagger": "2.0",
+  "tags": [
+    {
+      "name": "lichess"
+    }
+  ]
+}

@@ -1,0 +1,488 @@
+{
+  "platform": "lichess",
+  "operationCount": 11,
+  "operationIds": [
+    "lichess-cloud-eval",
+    "lichess-enums",
+    "lichess-puzzle",
+    "lichess-puzzle-batch",
+    "lichess-puzzle-daily",
+    "lichess-puzzle-many",
+    "lichess-puzzle-next",
+    "lichess-puzzle-themes",
+    "lichess-simuls",
+    "lichess-tablebase",
+    "lichess-version"
+  ],
+  "methods": {
+    "cloud_eval": "lichess-cloud-eval",
+    "enums": "lichess-enums",
+    "puzzle": "lichess-puzzle",
+    "puzzle_batch": "lichess-puzzle-batch",
+    "puzzle_daily": "lichess-puzzle-daily",
+    "puzzle_many": "lichess-puzzle-many",
+    "puzzle_next": "lichess-puzzle-next",
+    "puzzle_themes": "lichess-puzzle-themes",
+    "simuls": "lichess-simuls",
+    "tablebase": "lichess-tablebase",
+    "version": "lichess-version"
+  },
+  "operations": {
+    "lichess-cloud-eval": {
+      "id": "lichess-cloud-eval",
+      "method": "GET",
+      "path": "/lichess/cloud-eval",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "fen",
+          "in": "query",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "multiPv",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "variant",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "standard",
+            "chess960",
+            "crazyhouse",
+            "antichess",
+            "atomic",
+            "horde",
+            "kingOfTheHill",
+            "racingKings",
+            "threeCheck",
+            "fromPosition"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "X-FEN chess position",
+          "in": "query",
+          "name": "fen",
+          "required": true,
+          "type": "string",
+          "x-example": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        },
+        {
+          "description": "Number of principal variations requested; source default is 1",
+          "in": "query",
+          "name": "multiPv",
+          "type": "integer"
+        },
+        {
+          "description": "Source chess variant; defaults to standard",
+          "enum": [
+            "standard",
+            "chess960",
+            "crazyhouse",
+            "antichess",
+            "atomic",
+            "horde",
+            "kingOfTheHill",
+            "racingKings",
+            "threeCheck",
+            "fromPosition"
+          ],
+          "in": "query",
+          "name": "variant",
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-enums": {
+      "id": "lichess-enums",
+      "method": "GET",
+      "path": "/lichess/enums",
+      "pathParams": [],
+      "queryParams": [],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-puzzle": {
+      "id": "lichess-puzzle",
+      "method": "GET",
+      "path": "/lichess/puzzle",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "id",
+          "in": "query",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Lichess puzzle ID",
+          "in": "query",
+          "name": "id",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-puzzle-batch": {
+      "id": "lichess-puzzle-batch",
+      "method": "GET",
+      "path": "/lichess/puzzle/batch",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "angle",
+          "in": "query",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "difficulty",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "easiest",
+            "easier",
+            "normal",
+            "harder",
+            "hardest"
+          ]
+        },
+        {
+          "name": "nb",
+          "in": "query",
+          "type": "integer"
+        },
+        {
+          "name": "color",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "white",
+            "black"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Open-ended upstream puzzle theme",
+          "in": "query",
+          "name": "angle",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "description": "Optional source difficulty",
+          "enum": [
+            "easiest",
+            "easier",
+            "normal",
+            "harder",
+            "hardest"
+          ],
+          "in": "query",
+          "name": "difficulty",
+          "type": "string"
+        },
+        {
+          "description": "Number of puzzles, 1 through 50 (default 15)",
+          "in": "query",
+          "name": "nb",
+          "type": "integer"
+        },
+        {
+          "description": "Optional side to move",
+          "enum": [
+            "white",
+            "black"
+          ],
+          "in": "query",
+          "name": "color",
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-puzzle-daily": {
+      "id": "lichess-puzzle-daily",
+      "method": "GET",
+      "path": "/lichess/puzzle/daily",
+      "pathParams": [],
+      "queryParams": [],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-puzzle-many": {
+      "id": "lichess-puzzle-many",
+      "method": "GET",
+      "path": "/lichess/puzzle/many",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "ids",
+          "in": "query",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Comma-separated list of 1 to 50 five-character Lichess puzzle IDs",
+          "in": "query",
+          "name": "ids",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-puzzle-next": {
+      "id": "lichess-puzzle-next",
+      "method": "GET",
+      "path": "/lichess/puzzle/next",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "angle",
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "difficulty",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "easiest",
+            "easier",
+            "normal",
+            "harder",
+            "hardest"
+          ]
+        },
+        {
+          "name": "color",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "white",
+            "black"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Optional upstream puzzle theme/angle; values are open-ended",
+          "in": "query",
+          "name": "angle",
+          "type": "string"
+        },
+        {
+          "description": "Optional source difficulty",
+          "enum": [
+            "easiest",
+            "easier",
+            "normal",
+            "harder",
+            "hardest"
+          ],
+          "in": "query",
+          "name": "difficulty",
+          "type": "string"
+        },
+        {
+          "description": "Optional side to move",
+          "enum": [
+            "white",
+            "black"
+          ],
+          "in": "query",
+          "name": "color",
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-puzzle-themes": {
+      "id": "lichess-puzzle-themes",
+      "method": "GET",
+      "path": "/lichess/puzzle/themes",
+      "pathParams": [],
+      "queryParams": [],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-simuls": {
+      "id": "lichess-simuls",
+      "method": "GET",
+      "path": "/lichess/simuls",
+      "pathParams": [],
+      "queryParams": [],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-tablebase": {
+      "id": "lichess-tablebase",
+      "method": "GET",
+      "path": "/lichess/tablebase",
+      "pathParams": [],
+      "queryParams": [
+        {
+          "name": "variant",
+          "in": "query",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "standard",
+            "atomic",
+            "antichess"
+          ]
+        },
+        {
+          "name": "fen",
+          "in": "query",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "dtc",
+          "in": "query",
+          "type": "string",
+          "enum": [
+            "never",
+            "auxiliary",
+            "always"
+          ]
+        }
+      ],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [
+        {
+          "description": "Tablebase ruleset",
+          "enum": [
+            "standard",
+            "atomic",
+            "antichess"
+          ],
+          "in": "query",
+          "name": "variant",
+          "required": true,
+          "type": "string",
+          "x-example": "standard"
+        },
+        {
+          "description": "Position in Forsyth-Edwards Notation",
+          "in": "query",
+          "name": "fen",
+          "required": true,
+          "type": "string",
+          "x-example": "8/8/8/8/8/8/1K6/6k1 w - - 0 1"
+        },
+        {
+          "description": "Standard tablebase distance-to-conversion mode",
+          "enum": [
+            "never",
+            "auxiliary",
+            "always"
+          ],
+          "in": "query",
+          "name": "dtc",
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    },
+    "lichess-version": {
+      "id": "lichess-version",
+      "method": "GET",
+      "path": "/lichess/version",
+      "pathParams": [],
+      "queryParams": [],
+      "bodyParam": null,
+      "bodyRequired": false,
+      "params": [],
+      "produces": [
+        "application/json"
+      ],
+      "security": [
+        "ApiKeyAuth"
+      ]
+    }
+  }
+}
