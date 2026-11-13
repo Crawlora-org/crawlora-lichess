@@ -120,11 +120,17 @@ impl LichessApi {
         self.inner.call("lichess-puzzle", &params, RequestOptions::default()).await
     }
 
-    pub async fn puzzle_batch(&self, params: LichessPuzzleBatchParams) -> Result<ApiResponse, Error> {
+    pub async fn puzzle_batch(
+        &self,
+        params: LichessPuzzleBatchParams,
+    ) -> Result<ApiResponse, Error> {
         self.inner.call("lichess-puzzle-batch", &params, RequestOptions::default()).await
     }
 
-    pub async fn puzzle_daily(&self, params: LichessPuzzleDailyParams) -> Result<ApiResponse, Error> {
+    pub async fn puzzle_daily(
+        &self,
+        params: LichessPuzzleDailyParams,
+    ) -> Result<ApiResponse, Error> {
         self.inner.call("lichess-puzzle-daily", &params, RequestOptions::default()).await
     }
 
@@ -136,7 +142,10 @@ impl LichessApi {
         self.inner.call("lichess-puzzle-next", &params, RequestOptions::default()).await
     }
 
-    pub async fn puzzle_themes(&self, params: LichessPuzzleThemesParams) -> Result<ApiResponse, Error> {
+    pub async fn puzzle_themes(
+        &self,
+        params: LichessPuzzleThemesParams,
+    ) -> Result<ApiResponse, Error> {
         self.inner.call("lichess-puzzle-themes", &params, RequestOptions::default()).await
     }
 
